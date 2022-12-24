@@ -3,21 +3,22 @@ var FRAME_FACTOR = 20
 function makeSVG(n_x, n_y) {
   var s = Snap('#canvas')
   s.clear()
-  var frame = (n_x + 1) / (FRAME_FACTOR + 1)
+  // var frame = (n_x + 1) / (FRAME_FACTOR + 1)
   s.attr({
-    width: 500,
-    height: 500,
+    width: 1000,
+    height: 1000,
     viewBox: Snap.format('{min_x} {min_y} {width} {height}', {
-      min_x: 0 - frame,
-      min_y: 0 - frame,
-      width: n_x + 2 * frame,
-      height: n_y + 2 * frame
+      min_x: 0, //- frame,
+      min_y: 0, //- frame,
+      width: n_x,// + 2 * frame,
+      height: n_y// + 2 * frame
     }),
     // transform: "scale(-1,1)",
     // transform: "rotate(180)"
   })
   var g = s.group()
-  g.rect(-1, -1, n_x + 2, n_y + 2).attr({
+  // g.rect(-1, -1, n_x + 2, n_y + 2).attr({
+    g.rect(0, 0, n_x, n_y).attr({
     // fill: chroma.hcl(90, 1, 100),
     // fill: chroma.hcl(135, 10, 10),
     fill: 'none',
@@ -54,9 +55,10 @@ function dataURItoBlob(dataURI) {
   return blob;
 }
 
-function download(svg_id='#canvas') {
-  if (svg_id[0] === '#') {
-    var svg_id = svg_id.split('#')[1];
+function download(parmeters) {
+  const svg_id0='#canvas';
+  if (svg_id0[0] === '#') {
+    var svg_id = svg_id0.split('#')[1];
   }
   var svg = document.getElementById(svg_id);
   svg.toDataURL("image/png", {
@@ -66,7 +68,7 @@ function download(svg_id='#canvas') {
       var hash_pre = md5(image)
       console.log(hash_pre);
       var hash = hash_pre.substring(0, 6)
-      var filename = 'generative-kandinksy-' + svg_id.split('-')[0] + '-' + hash;
+      var filename = hash + '-' + parmeters;
       var png_filename = filename + ".png";
       var svg_filename = filename + ".svg";
 
@@ -74,10 +76,10 @@ function download(svg_id='#canvas') {
       var blobUrl = URL.createObjectURL(blob);
       download_as_file(png_filename, blobUrl);
 
-      var svgString = (new XMLSerializer()).serializeToString(svg);
-      var svgUrl = 'data:text/plain;charset=utf-8,';
-      svgUrl += encodeURIComponent(svgString);
-      download_as_file(svg_filename, svgUrl);
+      // var svgString = (new XMLSerializer()).serializeToString(svg);
+      // var svgUrl = 'data:text/plain;charset=utf-8,';
+      // svgUrl += encodeURIComponent(svgString);
+      // download_as_file(svg_filename, svgUrl);
     }
   });
 }
